@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clever Agribusiness Solutions - Coursework Portal & Platform</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        agri: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            dark: '#071f11',
+                        },
+                        amber: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        earth: {
+                            100: '#fef3c7',
+                            500: '#d97706',
+                            800: '#78350f',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .page-section { display: none; }
+        .page-section.active { display: block; animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal { transition: opacity 0.25s ease, transform 0.25s ease; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 flex flex-col min-h-screen">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-agri-100 dark:border-slate-800 shadow-sm transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Brand Logo -->
+                <a href="#home" onclick="navigateTo('home')" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-agri-800 via-agri-600 to-agri-500 flex items-center justify-center text-white shadow-lg shadow-agri-600/30 group-hover:scale-105 transition-transform">
+                        <i data-lucide="sprout" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold text-agri-900 dark:text-white tracking-tight block leading-none">
+                            CLEVER <span class="text-agri-600">AGRITECH</span>
+                        </span>
+                        <span class="text-[10px] uppercase tracking-widest font-bold text-amber-600 block mt-0.5">
+                            Coursework Portal & Agribusiness
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Menu (8 Pages) -->
+                <nav class="hidden xl:flex items-center gap-1 text-xs font-semibold">
+                    <button onclick="navigateTo('home')" id="nav-home" class="nav-btn px-3 py-2 rounded-lg transition-all text-agri-700 dark:text-agri-400 bg-agri-50 dark:bg-slate-800">Home</button>
+                    <button onclick="navigateTo('about')" id="nav-about" class="nav-btn px-3 py-2 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-agri-600">About Us</button>
+                    <button onclick="navigateTo('products')" id="nav-products" class="nav-btn px-3 py-2 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-agri-600">Products & Produce</button>
+                    <button onclick="navigateTo('services')" id="nav-services" class="nav-btn px-3 py-2 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-agri-600">Farm Services</button>
+                    <button onclick="navigateTo('sustainability')" id="nav-sustainability" class="nav-btn px-3 py-2 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-agri-600">Agri-Tech</button>
+                    <button onclick="navigateTo('market')" id="nav-market" class="nav-btn px-3 py-2 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-agri-600">Market Insights</button>
+                    <button onclick="navigateTo('education')" id="nav-education" class="nav-btn px-3 py-2 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-agri-600">Coursework Hub</button>
+                    <button onclick="navigateTo('contact')" id="nav-contact" class="nav-btn px-3 py-2 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-agri-600">Contact & Orders</button>
+                </nav>
+
+                <!-- Action Controls -->
+                <div class="flex items-center gap-3">
+                    <!-- Cart Button -->
+                    <button onclick="toggleCartModal()" class="relative p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-agri-50 dark:hover:bg-slate-700 transition-colors">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        <span id="cart-counter" class="absolute -top-1.5 -right-1.5 bg-amber-500 text-white font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow">0</span>
+                    </button>
+
+                    <!-- Order Produce CTA -->
+                    <button onclick="navigateTo('contact')" class="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-agri-700 hover:bg-agri-800 shadow-md shadow-agri-700/20 transition-all">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                        <span>Place Order</span>
+                    </button>
+
+                    <!-- Mobile Menu Trigger -->
+                    <button id="mobile-toggle" onclick="toggleMobileMenu()" class="xl:hidden p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden xl:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4 space-y-1">
+            <button onclick="navigateTo('home'); toggleMobileMenu()" class="block w-full text-left px-3 py-2.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-agri-50 dark:hover:bg-slate-800">1. Home Section</button>
+            <button onclick="navigateTo('about'); toggleMobileMenu()" class="block w-full text-left px-3 py-2.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-agri-50 dark:hover:bg-slate-800">2. About Us & Clever Kakande Profile</button>
+            <button onclick="navigateTo('products'); toggleMobileMenu()" class="block w-full text-left px-3 py-2.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-agri-50 dark:hover:bg-slate-800">3. Products & Produce Catalog</button>
+            <button onclick="navigateTo('services'); toggleMobileMenu()" class="block w-full text-left px-3 py-2.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-agri-50 dark:hover:bg-slate-800">4. Professional Farm Services</button>
+            <button onclick="navigateTo('sustainability'); toggleMobileMenu()" class="block w-full text-left px-3 py-2.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-agri-50 dark:hover:bg-slate-800">5. Sustainable Agri-Tech Solutions</button>
+            <button onclick="navigateTo('market'); toggleMobileMenu()" class="block w-full text-left px-3 py-2.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-agri-50 dark:hover:bg-slate-800">6. Market Insights & Live Prices</button>
+            <button onclick="navigateTo('education'); toggleMobileMenu()" class="block w-full text-left px-3 py-2.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-agri-50 dark:hover:bg-slate-800">7. Research & Coursework Hub</button>
+            <button onclick="navigateTo('contact'); toggleMobileMenu()" class="block w-full text-left px-3 py-2.5 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-agri-50 dark:hover:bg-slate-800">8. Contact & Orders</button>
+        </div>
+    </header>
+
+    <!-- MAIN SINGLE PAGE CONTENT ROUTER -->
+    <main class="flex-grow">
+
+        <!-- ================= PAGE 1: HOME ================= -->
+        <section id="page-home" class="page-section active">
+            <!-- Hero Section -->
+            <div class="relative bg-slate-900 text-white overflow-hidden py-24 sm:py-32">
+                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80" alt="Agriculture Banner" class="absolute inset-0 w-full h-full object-cover opacity-25">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent"></div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-agri-500/20 text-agri-300 text-xs font-bold border border-agri-500/30">
+                        <i data-lucide="award" class="w-4 h-4 text-amber-500"></i> Coursework Project 2026 • Student: Clever Kakande
+                    </span>
+                    <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-tight max-w-4xl mx-auto">
+                        Transforming Agriculture with <span class="text-transparent bg-clip-text bg-gradient-to-r from-agri-400 to-emerald-200">Smart Technology & Direct Markets</span>
+                    </h1>
+                    <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
+                        Clever Agribusiness Solutions provides sustainable farming inputs, IoT crop monitoring, precision irrigation, and direct market access for regional agricultural prosperity.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4 pt-4">
+                        <button onclick="navigateTo('products')" class="px-6 py-3.5 rounded-xl bg-agri-600 hover:bg-agri-700 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-agri-600/30 transition-all flex items-center gap-2">
+                            <span>Explore Produce Catalog</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="navigateTo('education')" class="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider border border-white/20 backdrop-blur transition-all flex items-center gap-2">
+                            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                            <span>View Coursework Dossier</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 relative z-20">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 text-center">
+                        <div class="text-3xl font-black text-agri-700 dark:text-agri-400">1,250+</div>
+                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">Acres Monitored</div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 text-center">
+                        <div class="text-3xl font-black text-amber-500">98%</div>
+                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">Germination Rate</div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 text-center">
+                        <div class="text-3xl font-black text-agri-700 dark:text-agri-400">480+</div>
+                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">Farmers Empowered</div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 text-center">
+                        <div class="text-3xl font-black text-amber-500">UGX 4.2B</div>
+                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">Market Facilitated</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Focus Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="text-center max-w-2xl mx-auto mb-14">
+                    <h2 class="text-3xl font-black text-slate-900 dark:text-white">Empowering Farmers with Agribusiness Excellence</h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mt-2">Integrating science, technology, and economic intelligence to build resilient food ecosystems.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=800&q=80" alt="Smart Farming" class="w-full h-48 object-cover">
+                        <div class="p-6 space-y-3">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-agri-600 bg-agri-50 px-2.5 py-1 rounded-full">Precision Tech</span>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Smart Sensor & Irrigation Networks</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">IoT moisture sensors paired with solar drip pumps optimize water usage by up to 45% while preserving soil health.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=800&q=80" alt="Organic Seeds" class="w-full h-48 object-cover">
+                        <div class="p-6 space-y-3">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">High Yield Inputs</span>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Certified Drought-Resistant Crops</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Providing high-grade hybrid seeds and organic bio-fertilizers tailored to East African climate conditions.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <img src="https://images.unsplash.com/photo-1595246140625-573b715d11dc?auto=format&fit=crop&w=800&q=80" alt="Agri Market" class="w-full h-48 object-cover">
+                        <div class="p-6 space-y-3">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded-full">Fair Trade</span>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Direct Marketplace & Value Chain</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Connecting rural growers directly to institutional buyers and exporters to eliminate exploitative middleman fees.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: ABOUT US ================= -->
+        <section id="page-about" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+                
+                <!-- Section Header -->
+                <div class="text-center max-w-3xl mx-auto space-y-3">
+                    <span class="px-3.5 py-1 rounded-full bg-agri-100 text-agri-800 text-xs font-bold uppercase">Background & Academic Profile</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">About Clever Agribusiness Solutions</h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Developed as a landmark coursework project by student <strong>Clever Kakande</strong>, our initiative merges agricultural science, web architecture, and commercial supply chain optimization.
+                    </p>
+                </div>
+
+                <!-- Founder Profile Card -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-8 shadow-xl grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80" alt="Clever Kakande Profile" class="w-full h-80 object-cover rounded-2xl shadow-md">
+                        <div class="absolute bottom-3 left-3 bg-agri-900/90 backdrop-blur text-white px-3 py-1.5 rounded-xl text-xs font-bold">
+                            Clever Kakande • Student ID: AG-2026-88
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 space-y-4">
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Lead Project Architect & Agronomist</span>
+                        <h3 class="text-2xl font-black text-slate-900 dark:text-white">Message from Clever Kakande</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            "Agriculture is the backbone of East Africa's economy. Through this coursework portal, I have designed a blueprint for modern agribusiness—demonstrating how IoT sensors, bio-friendly pest control, and transparent price indexing can empower smallholder farmers while delivering high-grade organic produce to urban markets."
+                        </p>
+                        <div class="grid grid-cols-2 gap-4 pt-2">
+                            <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800">
+                                <div class="text-xs font-bold text-slate-500">Institution / Center</div>
+                                <div class="text-xs font-extrabold text-agri-700 dark:text-agri-400">Masaka Agribusiness Institute</div>
+                            </div>
+                            <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800">
+                                <div class="text-xs font-bold text-slate-500">Project Year</div>
+                                <div class="text-xs font-extrabold text-amber-600">Academic Term 2026</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company Values & Timeline -->
+                <div class="space-y-8">
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white text-center">Core Operational Pillars</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-3">
+                            <div class="w-10 h-10 rounded-xl bg-agri-600 text-white flex items-center justify-center">
+                                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 dark:text-white text-base">Environmental Sustainability</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Eliminating synthetic toxic pesticides through biological pest management and organic compost.</p>
+                        </div>
+
+                        <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center">
+                                <i data-lucide="trending-up" class="w-5 h-5"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 dark:text-white text-base">Market Transparency</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Publishing daily price indexes across Uganda's primary produce markets to ensure fair pay.</p>
+                        </div>
+
+                        <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-3">
+                            <div class="w-10 h-10 rounded-xl bg-sky-600 text-white flex items-center justify-center">
+                                <i data-lucide="cpu" class="w-5 h-5"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 dark:text-white text-base">Digital Farming Integration</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Bringing mobile alerts, soil moisture sensors, and drone surveillance to rural smallholders.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: PRODUCTS & PRODUCE ================= -->
+        <section id="page-products" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div>
+                        <span class="px-3.5 py-1 rounded-full bg-agri-100 text-agri-800 text-xs font-bold uppercase">Fresh Harvest & Inputs</span>
+                        <h2 class="text-3xl font-black text-slate-900 dark:text-white mt-2">Products & Agricultural Produce</h2>
+                    </div>
+
+                    <!-- Search Bar & Currency Toggle -->
+                    <div class="flex flex-col sm:flex-row items-center gap-3">
+                        <div class="relative w-full sm:w-64">
+                            <input type="text" id="prod-search" oninput="filterProductSearch()" placeholder="Search maize, seeds..." class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-agri-500 focus:outline-none">
+                            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <button onclick="filterCategory('all')" class="cat-btn active px-4 py-2 rounded-xl text-xs font-bold bg-agri-700 text-white">All Items</button>
+                    <button onclick="filterCategory('crops')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Crops & Grains</button>
+                    <button onclick="filterCategory('organic')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Organic Produce</button>
+                    <button onclick="filterCategory('livestock')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Livestock & Feeds</button>
+                    <button onclick="filterCategory('inputs')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Seeds & Fertilizers</button>
+                </div>
+
+                <!-- Product Grid -->
+                <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Item 1 -->
+                    <div class="prod-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm flex flex-col justify-between" data-category="crops" data-name="yellow maize grain">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&w=600&q=80" alt="Maize" class="w-full h-48 object-cover">
+                            <span class="absolute top-3 right-3 bg-agri-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-md">Fresh Crop</span>
+                        </div>
+                        <div class="p-5 flex-grow space-y-2">
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base">Hybrid Yellow Maize</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">Grade-A dried maize grain harvested under strict moisture controls.</p>
+                            <div class="text-lg font-black text-agri-700 dark:text-agri-400 mt-2">UGX 1,200 <span class="text-xs text-slate-400 font-normal">/ kg ($0.32)</span></div>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-700">
+                            <button onclick="addToCart('Hybrid Yellow Maize', 1200)" class="w-full py-2.5 rounded-xl bg-agri-700 hover:bg-agri-800 text-white text-xs font-bold transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Add to Order
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="prod-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm flex flex-col justify-between" data-category="organic" data-name="robusta coffee beans">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1587734195503-904fca47e0e9?auto=format&fit=crop&w=600&q=80" alt="Coffee Beans" class="w-full h-48 object-cover">
+                            <span class="absolute top-3 right-3 bg-amber-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md">Export Grade</span>
+                        </div>
+                        <div class="p-5 flex-grow space-y-2">
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base">Robusta Coffee Cherries</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">Sun-dried organic Robusta beans harvested in Masaka, Uganda.</p>
+                            <div class="text-lg font-black text-agri-700 dark:text-agri-400 mt-2">UGX 9,500 <span class="text-xs text-slate-400 font-normal">/ kg ($2.56)</span></div>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-700">
+                            <button onclick="addToCart('Robusta Coffee Cherries', 9500)" class="w-full py-2.5 rounded-xl bg-agri-700 hover:bg-agri-800 text-white text-xs font-bold transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Add to Order
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="prod-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm flex flex-col justify-between" data-category="inputs" data-name="bio compost organic fertilizer">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1628352081506-83c43123ed6d?auto=format&fit=crop&w=600&q=80" alt="Fertilizer" class="w-full h-48 object-cover">
+                            <span class="absolute top-3 right-3 bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md">Bio Input</span>
+                        </div>
+                        <div class="p-5 flex-grow space-y-2">
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base">Bio-Active Organic Compost</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">Microbe-enriched compost formulation for optimal soil pH balance.</p>
+                            <div class="text-lg font-black text-agri-700 dark:text-agri-400 mt-2">UGX 65,000 <span class="text-xs text-slate-400 font-normal">/ 50kg ($17.50)</span></div>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-700">
+                            <button onclick="addToCart('Bio-Active Compost 50kg', 65000)" class="w-full py-2.5 rounded-xl bg-agri-700 hover:bg-agri-800 text-white text-xs font-bold transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Add to Order
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="prod-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm flex flex-col justify-between" data-category="livestock" data-name="dairy cow cattle feed mix">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1546445317-29f4545f9d52?auto=format&fit=crop&w=600&q=80" alt="Livestock" class="w-full h-48 object-cover">
+                            <span class="absolute top-3 right-3 bg-sky-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md">Feed Supplement</span>
+                        </div>
+                        <div class="p-5 flex-grow space-y-2">
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base">High-Protein Dairy Mash</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">Nutritionally balanced dairy cattle feed boost for lactation enrichment.</p>
+                            <div class="text-lg font-black text-agri-700 dark:text-agri-400 mt-2">UGX 115,000 <span class="text-xs text-slate-400 font-normal">/ 50kg ($31.00)</span></div>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-700">
+                            <button onclick="addToCart('Dairy Mash Feed 50kg', 115000)" class="w-full py-2.5 rounded-xl bg-agri-700 hover:bg-agri-800 text-white text-xs font-bold transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Add to Order
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: FARM SERVICES ================= -->
+        <section id="page-services" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+                <div class="text-center max-w-3xl mx-auto space-y-2">
+                    <span class="px-3.5 py-1 rounded-full bg-agri-100 text-agri-800 text-xs font-bold uppercase">Expert Advisory & Machinery</span>
+                    <h2 class="text-3xl font-black text-slate-900 dark:text-white">Professional Farm Advisory & Machinery Services</h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm">Empowering farm managers with scientific soil data, heavy machinery leasing, and irrigation engineering.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <!-- Service Card 1 -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm hover:border-agri-500 transition-all p-6 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-agri-100 dark:bg-slate-700 text-agri-700 dark:text-agri-300 flex items-center justify-center">
+                            <i data-lucide="flask-conical" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Soil Testing & NPK Analysis</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Comprehensive soil laboratory testing verifying pH balance, nitrogen, phosphorus, potassium, and micronutrients for crop optimization.</p>
+                        <button onclick="navigateTo('contact')" class="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-agri-700 hover:text-white text-xs font-bold transition-all">Book Soil Test</button>
+                    </div>
+
+                    <!-- Service Card 2 -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm hover:border-agri-500 transition-all p-6 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-slate-700 text-amber-700 dark:text-amber-400 flex items-center justify-center">
+                            <i data-lucide="droplet" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Solar Drip Irrigation Setup</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Custom engineering and layout of solar-powered borehole pumps and drip lines delivering water directly to plant root zones.</p>
+                        <button onclick="navigateTo('contact')" class="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-agri-700 hover:text-white text-xs font-bold transition-all">Request Irrigation Estimate</button>
+                    </div>
+
+                    <!-- Service Card 3 -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm hover:border-agri-500 transition-all p-6 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-sky-100 dark:bg-slate-700 text-sky-700 dark:text-sky-400 flex items-center justify-center">
+                            <i data-lucide="truck" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Tractor & Harvester Leasing</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Affordable daily rental of modern 75HP tractors, disc harrows, seed planters, and combined harvesters across Central Uganda.</p>
+                        <button onclick="navigateTo('contact')" class="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-agri-700 hover:text-white text-xs font-bold transition-all">Inquire Machinery Availability</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5: SUSTAINABLE AGRI-TECH ================= -->
+        <section id="page-sustainability" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+                <div class="text-center max-w-3xl mx-auto space-y-2">
+                    <span class="px-3.5 py-1 rounded-full bg-agri-100 text-agri-800 text-xs font-bold uppercase">Eco Innovation & AI</span>
+                    <h2 class="text-3xl font-black text-slate-900 dark:text-white">Sustainable Agri-Tech Innovations</h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm">Deploying precision technology to reduce environmental footprint while boosting yield efficiency.</p>
+                </div>
+
+                <!-- Feature Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col sm:flex-row gap-6 items-start">
+                        <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=400&q=80" alt="Drone Monitoring" class="w-full sm:w-40 h-36 object-cover rounded-2xl">
+                        <div class="space-y-2">
+                            <span class="text-[10px] font-bold text-agri-600 uppercase">Drone Technology</span>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Aerial NDVI Crop Surveillance</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">Multispectral drone cameras identify crop disease outbreaks, nutrient deficiencies, and pest swarms 2 weeks before visual detection.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col sm:flex-row gap-6 items-start">
+                        <img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=400&q=80" alt="IoT Sensor" class="w-full sm:w-40 h-36 object-cover rounded-2xl">
+                        <div class="space-y-2">
+                            <span class="text-[10px] font-bold text-amber-600 uppercase">IoT Hardware</span>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Cellular Soil Micro-Sensors</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">Wireless ground probes push real-time soil moisture, salinity, and temperature metrics directly to the farmer's mobile phone via SMS or web app.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 6: MARKET INSIGHTS & PRICING ================= -->
+        <section id="page-market" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+                <div class="text-center max-w-3xl mx-auto space-y-2">
+                    <span class="px-3.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold uppercase">Real-Time Regional Data</span>
+                    <h2 class="text-3xl font-black text-slate-900 dark:text-white">Produce Market Commodity Index</h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm">Updated price tracking across key Ugandan trading centers (Masaka, Kampala, Mbarara, Mbale).</p>
+                </div>
+
+                <!-- Price Search and Filter Table -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-lg">
+                    <div class="p-6 bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Daily Wholesale Commodity Prices</h3>
+                        <input type="text" id="market-search" oninput="filterMarketTable()" placeholder="Search crop or market..." class="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-xs bg-white dark:bg-slate-800 w-full sm:w-64">
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-600 dark:text-slate-300">
+                            <thead class="bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white font-bold uppercase">
+                                <tr>
+                                    <th class="p-4">Commodity</th>
+                                    <th class="p-4">Market Hub</th>
+                                    <th class="p-4">Price (UGX / Kg)</th>
+                                    <th class="p-4">Price (USD / Kg)</th>
+                                    <th class="p-4">Weekly Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody id="market-tbody" class="divide-y divide-slate-100 dark:divide-slate-700">
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                                    <td class="p-4 font-bold text-slate-900 dark:text-white">Dry Maize Grain</td>
+                                    <td class="p-4">Masaka Central</td>
+                                    <td class="p-4 font-extrabold text-agri-700 dark:text-agri-400">UGX 1,200</td>
+                                    <td class="p-4">$0.32</td>
+                                    <td class="p-4 text-emerald-600 font-bold flex items-center gap-1"><i data-lucide="trending-up" class="w-4 h-4"></i> +4.2%</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                                    <td class="p-4 font-bold text-slate-900 dark:text-white">Robusta Coffee (FAQ)</td>
+                                    <td class="p-4">Kampala Owino</td>
+                                    <td class="p-4 font-extrabold text-agri-700 dark:text-agri-400">UGX 9,500</td>
+                                    <td class="p-4">$2.56</td>
+                                    <td class="p-4 text-emerald-600 font-bold flex items-center gap-1"><i data-lucide="trending-up" class="w-4 h-4"></i> +6.8%</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                                    <td class="p-4 font-bold text-slate-900 dark:text-white">Yellow Beans (Nambale)</td>
+                                    <td class="p-4">Mbarara City</td>
+                                    <td class="p-4 font-extrabold text-agri-700 dark:text-agri-400">UGX 3,400</td>
+                                    <td class="p-4">$0.91</td>
+                                    <td class="p-4 text-amber-600 font-bold flex items-center gap-1"><i data-lucide="minus" class="w-4 h-4"></i> 0.0%</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                                    <td class="p-4 font-bold text-slate-900 dark:text-white">Fresh Unprocessed Milk</td>
+                                    <td class="p-4">Kiruhura Hub</td>
+                                    <td class="p-4 font-extrabold text-agri-700 dark:text-agri-400">UGX 1,500 / L</td>
+                                    <td class="p-4">$0.40 / L</td>
+                                    <td class="p-4 text-emerald-600 font-bold flex items-center gap-1"><i data-lucide="trending-up" class="w-4 h-4"></i> +2.1%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 7: RESEARCH & COURSEWORK HUB ================= -->
+        <section id="page-education" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+                <div class="text-center max-w-3xl mx-auto space-y-2">
+                    <span class="px-3.5 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-bold uppercase">Academic Project Portfolio</span>
+                    <h2 class="text-3xl font-black text-slate-900 dark:text-white">Coursework & Academic Documentation</h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm">Official student submission portal for Clever Kakande's Agribusiness Coursework Project (2026).</p>
+                </div>
+
+                <!-- Academic Metadata Card -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-8 shadow-xl grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2">
+                            <i data-lucide="file-badge" class="w-5 h-5 text-agri-600"></i> Coursework Metadata
+                        </h3>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between py-1 border-b border-slate-50 dark:border-slate-700"><span class="text-slate-400">Student Name:</span> <span class="font-bold text-slate-800 dark:text-slate-200">Clever Kakande</span></div>
+                            <div class="flex justify-between py-1 border-b border-slate-50 dark:border-slate-700"><span class="text-slate-400">Student ID:</span> <span class="font-bold text-amber-600">AG-2026-88</span></div>
+                            <div class="flex justify-between py-1 border-b border-slate-50 dark:border-slate-700"><span class="text-slate-400">Course Module:</span> <span class="font-bold text-slate-800 dark:text-slate-200">AGB-402 Modern Agribusiness & Web Systems</span></div>
+                            <div class="flex justify-between py-1 border-b border-slate-50 dark:border-slate-700"><span class="text-slate-400">Academic Year:</span> <span class="font-bold text-slate-800 dark:text-slate-200">2026</span></div>
+                            <div class="flex justify-between py-1"><span class="text-slate-400">Submission Status:</span> <span class="font-bold text-emerald-600">Verified & Approved</span></div>
+                        </div>
+                        <button onclick="openCourseworkModal()" class="w-full py-3 rounded-xl bg-agri-700 hover:bg-agri-800 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="file-text" class="w-4 h-4"></i> Preview Full Coursework Assignment Document
+                        </button>
+                    </div>
+
+                    <!-- Interactive ROI Calculator Widget -->
+                    <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i data-lucide="calculator" class="w-5 h-5 text-amber-600"></i> Agribusiness Yield ROI Estimator
+                        </h3>
+
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <label class="block font-semibold mb-1">Land Size (Acres):</label>
+                                <input type="number" id="roi-acres" value="5" min="1" oninput="calculateROI()" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800">
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-1">Target Crop:</label>
+                                <select id="roi-crop" onchange="calculateROI()" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800">
+                                    <option value="1500000">Hybrid Yellow Maize (Est. UGX 1.5M profit / acre)</option>
+                                    <option value="4200000">Robusta Coffee (Est. UGX 4.2M profit / acre)</option>
+                                    <option value="2100000">Yellow Beans (Est. UGX 2.1M profit / acre)</option>
+                                </select>
+                            </div>
+                            <div class="p-4 rounded-xl bg-agri-100 dark:bg-slate-800 text-agri-900 dark:text-agri-300">
+                                <div class="text-[10px] uppercase font-bold text-slate-500">Estimated Seasonal Net Income</div>
+                                <div id="roi-result" class="text-2xl font-black text-agri-700 dark:text-agri-400">UGX 7,500,000</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 8: CONTACT & ORDERS ================= -->
+        <section id="page-contact" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+                <div class="text-center max-w-3xl mx-auto space-y-2">
+                    <span class="px-3.5 py-1 rounded-full bg-agri-100 text-agri-800 text-xs font-bold uppercase">Direct Engagement</span>
+                    <h2 class="text-3xl font-black text-slate-900 dark:text-white">Contact & Order Placement</h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm">Reach out to student project director Clever Kakande or place your produce bulk order.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Order & Contact Form -->
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl space-y-6">
+                        <div id="contact-alert" class="hidden p-4 rounded-xl bg-agri-500/10 border border-agri-500/30 text-agri-700 dark:text-agri-300 text-xs font-bold flex items-center gap-3">
+                            <i data-lucide="check-circle" class="w-5 h-5 shrink-0 text-agri-600"></i>
+                            <span>Message submitted! Clever Agribusiness team will respond shortly.</span>
+                        </div>
+
+                        <form onsubmit="handleContactSubmit(event)" class="space-y-4 text-xs">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block font-bold mb-1">Your Full Name</label>
+                                    <input type="text" required placeholder="John Musoke" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+                                </div>
+                                <div>
+                                    <label class="block font-bold mb-1">Phone Number / WhatsApp</label>
+                                    <input type="tel" required placeholder="+256 700 000 000" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block font-bold mb-1">Subject / Requirement</label>
+                                <select class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+                                    <option>Produce Bulk Purchase Inquiry</option>
+                                    <option>Soil Testing & Advisory Service</option>
+                                    <option>Machinery Leasing Inquiry</option>
+                                    <option>Coursework Collaboration with Clever Kakande</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block font-bold mb-1">Message Details</label>
+                                <textarea rows="4" required placeholder="Specify crop quantities, location, or consultation date..." class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 resize-none"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-3.5 rounded-xl bg-agri-700 hover:bg-agri-800 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="send" class="w-4 h-4"></i> Submit Message
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Map Location & Direct Info -->
+                    <div class="space-y-6">
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 space-y-4">
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base">Agribusiness Operational Hub Location</h3>
+                            <p class="text-xs text-slate-500">Masaka Agribusiness Research Center, Masaka, Uganda</p>
+                            <!-- Embedded Google Maps iframe -->
+                            <div class="w-full h-56 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63836.21666838384!2d31.706173!3d-0.341144!2m3!1f0!0f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19d91f24dcdcb18d%3A0x8e8eb43d9a1c876c!2sMasaka%2C%20Uganda!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
+                            </div>
+                        </div>
+
+                        <div class="bg-agri-900 text-white p-6 rounded-3xl space-y-3">
+                            <h4 class="font-bold text-sm text-agri-300">Direct Academic Contact</h4>
+                            <div class="text-xs space-y-1">
+                                <p><strong>Project Lead:</strong> Clever Kakande</p>
+                                <p><strong>Email:</strong> clever.kakande@agri-coursework.ug</p>
+                                <p><strong>Phone:</strong> +256 752 000 111</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-agri-dark text-slate-400 py-12 border-t border-agri-900 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-agri-900/60 pb-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-agri-600 flex items-center justify-center text-white">
+                        <i data-lucide="sprout" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-white text-base block">CLEVER AGRITECH</span>
+                        <span class="text-[10px] text-amber-500 font-bold uppercase">Agribusiness Coursework Platform</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-4 text-xs font-semibold">
+                    <button onclick="navigateTo('home')" class="hover:text-white transition-colors">Home</button>
+                    <button onclick="navigateTo('about')" class="hover:text-white transition-colors">About Clever Kakande</button>
+                    <button onclick="navigateTo('products')" class="hover:text-white transition-colors">Products</button>
+                    <button onclick="navigateTo('education')" class="hover:text-white transition-colors">Coursework Hub</button>
+                    <button onclick="navigateTo('contact')" class="hover:text-white transition-colors">Contact</button>
+                </div>
+            </div>
+
+            <div class="text-center text-xs space-y-1 text-slate-500">
+                <p>&copy; 2026 Clever Agribusiness Solutions • Submitted by Clever Kakande (Student ID: AG-2026-88).</p>
+                <p>Designed and built as an interactive single-file web project submission.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CART SLIDE-OVER MODAL -->
+    <div id="cart-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex justify-end">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-md h-full p-6 flex flex-col justify-between shadow-2xl">
+            <div class="space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+                    <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="shopping-bag" class="w-5 h-5 text-agri-600"></i> Your Order Basket
+                    </h3>
+                    <button onclick="toggleCartModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div id="cart-items-list" class="space-y-3 max-h-[60vh] overflow-y-auto text-xs">
+                    <p class="text-slate-400 text-center py-8">Your basket is currently empty.</p>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-3">
+                <div class="flex justify-between font-bold text-sm text-slate-900 dark:text-white">
+                    <span>Total Amount:</span>
+                    <span id="cart-total" class="text-agri-700 dark:text-agri-400">UGX 0</span>
+                </div>
+                <button onclick="toggleCartModal(); navigateTo('contact')" class="w-full py-3 rounded-xl bg-agri-700 hover:bg-agri-800 text-white font-bold text-xs shadow-lg transition-all">
+                    Proceed to Checkout / Confirm Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- COURSEWORK DOCUMENT MODAL -->
+    <div id="coursework-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto space-y-6 shadow-2xl">
+            <div class="flex justify-between items-start border-b border-slate-100 dark:border-slate-800 pb-4">
+                <div>
+                    <span class="text-[10px] font-bold text-amber-600 uppercase">Official Coursework Dossier</span>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white">Agribusiness Project Abstract</h3>
+                </div>
+                <button onclick="closeCourseworkModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="text-xs text-slate-600 dark:text-slate-300 space-y-4 leading-relaxed">
+                <p><strong>Title:</strong> Digitizing Smallholder Produce Value Chains in Central Uganda</p>
+                <p><strong>Submitted By:</strong> Clever Kakande</p>
+                <p><strong>Abstract:</strong> This project evaluates the economic viability of integrated web-based agricultural platforms in connecting rural farmers with urban consumers. Through a combination of real-time price indexing, organic soil conditioning, and solar drip irrigation, the proposed agribusiness model reduces post-harvest losses from 35% to under 8%.</p>
+                <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-2">Key Research Recommendations:</h4>
+                    <ul class="list-disc pl-4 space-y-1 text-slate-500">
+                        <li>Standardize digital price metrics across regional markets.</li>
+                        <li>Expand bio-fertilizer accessibility to smallholder farming cooperatives.</li>
+                        <li>Implement cellular soil moisture probe networks.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button onclick="closeCourseworkModal()" class="w-full py-3 rounded-xl bg-slate-800 text-white font-bold text-xs">
+                Close Document Preview
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Cart State
+        let cart = [];
+
+        // Page Navigation Handler
+        function navigateTo(pageId) {
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(p => p.classList.remove('active'));
+
+            const target = document.getElementById('page-' + pageId);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => {
+                btn.classList.remove('text-agri-700', 'dark:text-agri-400', 'bg-agri-50', 'dark:bg-slate-800');
+                btn.classList.add('text-slate-600', 'dark:text-slate-300');
+            });
+
+            const activeBtn = document.getElementById('nav-' + pageId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600', 'dark:text-slate-300');
+                activeBtn.classList.add('text-agri-700', 'dark:text-agri-400', 'bg-agri-50', 'dark:bg-slate-800');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // Add to Cart Logic
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCartUI();
+            toggleCartModal();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-counter').textContent = cart.length;
+            const list = document.getElementById('cart-items-list');
+            
+            if (cart.length === 0) {
+                list.innerHTML = `<p class="text-slate-400 text-center py-8">Your basket is currently empty.</p>`;
+                document.getElementById('cart-total').textContent = 'UGX 0';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+            cart.forEach((item, idx) => {
+                total += item.price;
+                html += `
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                        <div>
+                            <div class="font-bold text-slate-900 dark:text-white">${item.name}</div>
+                            <div class="text-agri-600 font-extrabold">UGX ${item.price.toLocaleString()}</div>
+                        </div>
+                        <button onclick="removeFromCart(${idx})" class="text-red-500 hover:text-red-700 p-1">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            list.innerHTML = html;
+            document.getElementById('cart-total').textContent = 'UGX ' + total.toLocaleString();
+            lucide.createIcons();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function toggleCartModal() {
+            document.getElementById('cart-modal').classList.toggle('hidden');
+        }
+
+        // Coursework Modal Toggle
+        function openCourseworkModal() {
+            document.getElementById('coursework-modal').classList.remove('hidden');
+        }
+
+        function closeCourseworkModal() {
+            document.getElementById('coursework-modal').classList.add('hidden');
+        }
+
+        // Product Search and Category Filter
+        function filterCategory(cat) {
+            const btns = document.querySelectorAll('.cat-btn');
+            btns.forEach(b => {
+                b.classList.remove('bg-agri-700', 'text-white');
+                b.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+            });
+
+            event.target.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+            event.target.classList.add('bg-agri-700', 'text-white');
+
+            const items = document.querySelectorAll('.prod-card');
+            items.forEach(item => {
+                if (cat === 'all' || item.getAttribute('data-category') === cat) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function filterProductSearch() {
+            const query = document.getElementById('prod-search').value.toLowerCase();
+            const items = document.querySelectorAll('.prod-card');
+            items.forEach(item => {
+                const name = item.getAttribute('data-name').toLowerCase();
+                if (name.includes(query)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Market Table Filter
+        function filterMarketTable() {
+            const query = document.getElementById('market-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#market-tbody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // ROI Calculator
+        function calculateROI() {
+            const acres = parseFloat(document.getElementById('roi-acres').value) || 0;
+            const profitPerAcre = parseFloat(document.getElementById('roi-crop').value) || 0;
+            const total = acres * profitPerAcre;
+            document.getElementById('roi-result').textContent = 'UGX ' + total.toLocaleString();
+        }
+
+        // Contact Form Handler
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const alert = document.getElementById('contact-alert');
+            alert.classList.remove('hidden');
+            e.target.reset();
+            setTimeout(() => alert.classList.add('hidden'), 6000);
+        }
+    </script>
+</body>
+</html>
